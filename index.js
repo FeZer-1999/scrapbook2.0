@@ -44,10 +44,10 @@ function createScrapCard(title, message, position) {
           </p>
         </div>
         <div class="w100 d-flex justify-content-end pr-2 pb-2">
-          <button class="btn btn-danger mr-1" onclick="deletCard(${position})">
+          <button class="btn btn-outline-light mr-1" onclick="deletCard(${position})">
               Deletar
           </button>
-          <button class="btn btn-info" onclick="openEditModal(${position})">
+          <button class="btn btn-outline-light" onclick="openEditModal(${position})">
               Editar
           </button>
     </div>
