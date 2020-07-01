@@ -6,7 +6,7 @@ let addButton = document.getElementById("addButton");
 let scrapsField = document.getElementById("scrapsField");
 let btnSaveEdit = document.getElementById("saveEdit");
 
-let scraps = [];
+let scraps = JSON.parse(localStorage.getItem("lista_recados")) || [];
 
 function renderScraps() {
   scrapsField.innerHTML = "";
@@ -14,8 +14,10 @@ function renderScraps() {
   for (const scrap of scraps) {
     let position = scraps.indexOf(scrap);
     scrapsField.innerHTML += createScrapCard(scrap.title, scrap.message, position);
+    
   }
 }
+renderScraps();
 
 function addNewScrap() {
   let title = titleInput.value;
@@ -31,7 +33,7 @@ function addNewScrap() {
   scraps.push({ title, message });
 
   renderScraps();
- 
+  saveToStorage(); 
 }
 
 function createScrapCard(title, message, position) {
@@ -55,6 +57,10 @@ function createScrapCard(title, message, position) {
   `;
 }
 
+function saveToStorage() {
+  localStorage.setItem('lista_recados', JSON.stringify(scraps));
+}
+
 function openEditModal(position) {
   $('#editModal').modal('toggle');
 
@@ -62,6 +68,7 @@ function openEditModal(position) {
   editMessageInput.value = scraps[position].message;
 
   btnSaveEdit.setAttribute("onclick", `saveChanges(${position})`);
+  
 }
 
 function saveChanges(position) {
@@ -69,7 +76,7 @@ function saveChanges(position) {
   scraps[position].message = editMessageInput.value; 
 
   renderScraps();
-  
+  saveToStorage();
 }
 
 function deletCard(position) {
@@ -78,7 +85,7 @@ function deletCard(position) {
   scrapsField.innerHTML = "";
     
   renderScraps();
-  
+  saveToStorage();
 }
 
 addButton.onclick = addNewScrap;
