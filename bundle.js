@@ -60,8 +60,7 @@ var TaskList = /*#__PURE__*/function () {
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var scrap = _step.value;
-          var cardHtml = this.createScrapCard(scrap.title, scrap.message);
-          this.insertHtml(cardHtml);
+          this.generateScrap(scrap.id, scrap.title, scrap.message);
         }
       } catch (err) {
         _iterator.e(err);
@@ -69,6 +68,13 @@ var TaskList = /*#__PURE__*/function () {
         _iterator.f();
       }
 
+      this.setButtonEvents();
+    }
+  }, {
+    key: "generateScrap",
+    value: function generateScrap(id, title, message) {
+      var cardHtml = this.createScrapCard(id, title, message);
+      this.insertHtml(cardHtml);
       this.setButtonEvents();
     }
   }, {
@@ -81,30 +87,35 @@ var TaskList = /*#__PURE__*/function () {
         return alert("Preencha todos os campos");
       }
 
-      var id = this.generateScrapId();
       this.titleInput.value = "";
       this.messageInput.value = "";
+      var id = this.generateScrapId();
       this.scraps.push({
         id: id,
         title: title,
         message: message
       });
-      this.renderScraps();
+      this.generateScrap(id, title, message);
     }
   }, {
     key: "deleteScraps",
     value: function deleteScraps(event) {
       event.path[2].remove();
+      var scrapId = event.path[2].getAttribute("id-scrap");
+      var scrapIndex = this.scraps.findIndex(function (scrap) {
+        return scrap.id == scrapId;
+      });
+      this.scraps.splice(scrapIndex, 1);
     }
   }, {
     key: "insertHtml",
     value: function insertHtml(html) {
-      this.scrapsField += html;
+      this.scrapsField.innerHTML += html;
     }
   }, {
     key: "createScrapCard",
-    value: function createScrapCard(title, message) {
-      return "\n      <div class=\"message-cards card text-white bg-dark m-2\">\n        <div class=\"card-header font-weight-bold\">".concat(title, "</div>\n        <div class=\"card-body\">\n          <p class=\"card-text\">\n            ").concat(message, "\n          </p>\n        </div>\n        <div class=\"w100 d-flex justify-content-end pr-2 pb-2\">\n          <button class=\"btn btn-danger mr-1 delete-button\">\n            Deletar\n          </button>\n          <button class=\"btn btn-info\">\n            Editar\n          </button>\n        </div>\n      </div>\n    ");
+    value: function createScrapCard(id, title, message) {
+      return "\n      <div class=\"message-cards card text-white bg-dark m-2 id-scrap=\"".concat(id, "\">\n        <div class=\"card-header font-weight-bold\">").concat(title, "</div>\n        <div class=\"card-body\">\n          <p class=\"card-text\">\n            ").concat(message, "\n          </p>\n        </div>\n        <div class=\"w100 d-flex justify-content-end pr-2 pb-2\">\n          <button class=\"btn btn-danger mr-1 delete-button\">\n            Deletar\n          </button>\n          <button class=\"btn btn-info\">\n            Editar\n          </button>\n        </div>\n      </div>\n    ");
     }
   }]);
 
